@@ -1,13 +1,18 @@
 'use strict';
-module.exports = (app) => {
-  const ares = require('../controllers/ares-controllers');
 
-  app.route('/api/tracks')
-    .get(ares.list_all_tracks)
-    .post(ares.create_tracks);
+const router = require('express').Router();
+const ares = require('../controllers/ares-controllers');
 
-  app.route('/api/tracks/:tracksId')
-     .get(ares.read_a_task)
-     .put(ares.update_a_track)
-     .delete(ares.delete_a_track);
+router.get('/tracks', ares.list_all_tracks);
+
+router.get('/tracks/:tracksId', ares.read_a_task);
+
+router.post('/tracks', ares.create_tracks);
+
+router.put('/tracks/:traksId', ares.update_a_track);
+
+router.put('/tracks/:tracksId', ares.delete_a_track);
+
+module.exports = {
+  router
 };

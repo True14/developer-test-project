@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 
 exports.list_all_tracks = (req, res) => {
   Track.find()
-    .then((tracks) => {
+    .then(tracks => {
       res.json(tracks.map((track) => {
         return track.apiRepr();
       }));

@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const { Track } = require('./models/ares-models');
+const { Track } = require('../models/ares-models');
 mongoose.Promise = global.Promise;
 
 exports.list_all_tracks = (req, res) => {
@@ -26,8 +26,7 @@ exports.create_tracks = (req, res) => {
                      return Track.create(track);
                    } else {
                      return Track.findByIDAndUpdate(track.id, {
-                       latitude: track.latitude,
-                       longitude: track.longitude,
+                       position: track.position,
                        name: track.name,
                        callsign: track.callsign,
                        speed: track.speed,
@@ -62,8 +61,7 @@ exports.read_a_task = (req, res) => {
 
 exports.update_a_track = (req, res) => {
   Track.findByIDAndUpdate(req.params.tracksId, {
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
+    position: req.body.position,
     name: req.body.name,
     callsign: req.body.callsign,
     speed: req.body.speed,

@@ -2,8 +2,10 @@
 
 const mongoose = require('mongoose');
 const trackSchema = mongoose.Schema({
-  latitude: Number,
-  longitude: Number,
+  position: {
+    latitude: Number,
+    longitude: Number
+  },
   name: String,
   callsign: String,
   mmsid: String,
@@ -15,8 +17,7 @@ const trackSchema = mongoose.Schema({
 trackSchema.methods.apiRepr = function() {
   return {
     id: this._id,
-    latitude: this.latitude,
-    longitude: this.longitude,
+    position: this.position,
     name: this.name,
     callsign: this.callsign,
     mmsid: this.mmsid,

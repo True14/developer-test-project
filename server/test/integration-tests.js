@@ -2,9 +2,9 @@
 process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const { app, runServer, closeServer} = require ('../server');
+const { app, runServer, closeServer } = require ('../server');
 const { TEST_DATABASE_URL } = require('../config');
-const Track = require('../api/models/ares-models');
+const { Track }  = require('../api/models/ares-models');
 const mongoose = require('mongoose');
 const should = chai.should();
 
@@ -46,12 +46,10 @@ const clearDB = () => {
 
 describe('Ares-Test-Project', () => {
   before(() => {
-    console.log('this is happening');
     return runServer(undefined, TEST_DATABASE_URL);
   });
 
   after(() => {
-    console.log('hello');
     return closeServer();
   });
 
@@ -60,14 +58,35 @@ describe('Ares-Test-Project', () => {
   });
 
   describe('GET endpoints', () => {
-    describe('/api/tracks', () => {
+    describe('/tracks', () => {
       it('should return a status of 200', () => {
+        return chai.request(app).get('/api/tracks')
+          .then(_res => {
+            _res.should.be.json;
+            _res.should.have.status(200);
+          });
+      });
+
+      it('should return all of the tracks in the database with correct data', () => {
         let res;
-        return chai.request(app).get('/tracks')
-        .then(_res => {
-          res = _res;
-          res.should.have.status(200);
-        });
+        return Track.insertMany(testData)
+          .then(_res => {
+            return chai.request(app).get('/api/tracks');
+          })
+          .then(_res => {
+            res = _res;
+            res.body.should.be.a('array');
+            res.body.should.have.length.of.at.least(2);
+            res.body.forEach(track => {
+              track.should.have.property('position');
+              track.should.have.property('name');
+              track.should.have.property('callsign');
+              track.should.have.property('mmsid');
+              track.should.have.property('speed');
+              track.should.have.property('course');
+              track.should.have.property('heading');
+            })
+          });
       });
     });
   });

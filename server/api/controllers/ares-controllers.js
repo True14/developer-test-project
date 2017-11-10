@@ -19,33 +19,42 @@ exports.list_all_tracks = (req, res) => {
 
 exports.create_tracks = (req, res) => {
   const create = [];
-  req.body.tracks.forEach(track => {
-    create.push(Track.findOne({mmsid: track.mmsid})
-                 .then(track => {
-                   if (!track) {
-                     return Track.create(track);
-                   } else {
-                     return Track.findByIDAndUpdate(track.id, {
-                       position: track.position,
-                       name: track.name,
-                       callsign: track.callsign,
-                       speed: track.speed,
-                       course: track.course,
-                       heading: track.heading
-                     });
-                   }
-                 })
-               );
-  });
-
-  return Promise.all(create)
-   .then(results => {
-     res.status(200);
-   })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({error: 'Sorry, but there was a problem creating the track(s)'});
+  const check = track => {
+    return Track.findOne({ mmsid: track.mmsid })
+    .then(resultTrack => {
+      if (!resultTrack) {
+        return Track.create(track);
+      } else {
+        return Track.findByIdAndUpdate(resultTrack.id, {
+          position: track.position,
+          name: track.name,
+          callsign: track.callsign,
+          speed: track.speed,
+          course: track.course,
+          heading: track.heading
+        }, {new: true});
+      }
     });
+  };
+  const chain = req.body.reduce((previous, track) => {
+    return previous.then(() => {
+      return check(track);
+    });
+  }, Promise.resolve());
+
+  return chain
+  .then(results => {
+    return Track.find();
+  })
+  .then(results => {
+    res.status(200).json(results.map(track => {
+      return track.apiRepr();
+    }));
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'Sorry, but there was a problem creating the track(s)'});
+  });
 };
 
 exports.read_a_task = (req, res) => {
@@ -60,16 +69,16 @@ exports.read_a_task = (req, res) => {
 };
 
 exports.update_a_track = (req, res) => {
-  Track.findByIDAndUpdate(req.params.tracksId, {
+  return Track.findByIdAndUpdate(req.params.tracksId, {
     position: req.body.position,
     name: req.body.name,
     callsign: req.body.callsign,
     speed: req.body.speed,
     course: req.body.course,
     heading: req.body.heading
-  })
+  }, {new: true})
   .then(results => {
-    res.status(200);
+    res.status(200).json(results.apiRepr());
   })
   .catch(err => {
     res.status(500).json({error: 'Problems updating the track'});
@@ -77,7 +86,7 @@ exports.update_a_track = (req, res) => {
 };
 
 exports.delete_a_track = (req, res) => {
-  Track.remove({_id: req.params.taskId})
+  return Track.remove({_id: req.params.taskId})
   .then(result => {
     res.status(200);
   })

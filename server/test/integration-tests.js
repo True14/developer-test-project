@@ -78,16 +78,57 @@ describe('Ares-Test-Project', () => {
             res.body.should.be.a('array');
             res.body.should.have.length.of.at.least(2);
             res.body.forEach(track => {
-              track.should.have.property('position');
-              track.should.have.property('name');
-              track.should.have.property('callsign');
-              track.should.have.property('mmsid');
-              track.should.have.property('speed');
-              track.should.have.property('course');
-              track.should.have.property('heading');
-            })
+              track.should.have.property('position').which.is.a('object');
+              track.position.should.have.property('latitude').which.is.a('number');
+              track.position.should.have.property('longitude').which.is.a('number');
+              track.should.have.property('name').which.is.a('string');
+              track.should.have.property('callsign').which.is.a('string');
+              track.should.have.property('mmsid').which.is.a('string');
+              track.should.have.property('speed').which.is.a('number');
+              track.should.have.property('course').which.is.a('number');
+              track.should.have.property('heading').which.is.a('number');
+            });
+          });
+      });
+
+    });
+
+    describe('/tracks/:tracksId', () => {
+      it.only('should retrieve the correct track', () => {
+        let res;
+        return Track.insertMany(testData)
+          .then(_res => {
+            res = _res;
+            return chai.request(app).get(`/api/tracks/${res[0]._id}`);
+          })
+          .then(_res => {
+            let track = _res.body;
+            res = res[0];
+            
+            _res.should.be.json;
+            _res.should.have.status(200);
+            track.should.be.an('object');
+            track.id.should.equal(res._id.toString());
+            track.should.have.property('position').which.is.a('object');
+            track.position.should.have.property('latitude').which.is.a('number');
+            track.position.latitude.should.equal(res.position.latitude);
+            track.position.should.have.property('longitude').which.is.a('number');
+            track.position.longitude.should.equal(res.position.longitude);
+            track.should.have.property('name').which.is.a('string');
+            track.name.should.equal(res.name);
+            track.should.have.property('callsign').which.is.a('string');
+            track.callsign.should.equal(res.callsign);
+            track.should.have.property('mmsid').which.is.a('string');
+            track.mmsid.should.equal(res.mmsid);
+            track.should.have.property('speed').which.is.a('number');
+            track.speed.should.equal(res.speed);
+            track.should.have.property('course').which.is.a('number');
+            track.course.should.equal(res.course);
+            track.should.have.property('heading').which.is.a('number');
+            track.heading.should.equal(res.heading);
           });
       });
     });
+
   });
 });

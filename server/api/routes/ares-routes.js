@@ -9,7 +9,7 @@ router.get('/tracks/:tracksId', ares.read_a_task);
 
 router.post('/tracks', ares.create_tracks);
 
-router.put('/tracks/:traksId', ares.update_a_track);
+router.put('/tracks/:tracksId', ares.update_a_track);
 
 router.put('/tracks/:tracksId', ares.delete_a_track);
 

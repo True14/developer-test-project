@@ -49,7 +49,7 @@ exports.create_tracks = (req, res) => {
 };
 
 exports.read_a_task = (req, res) => {
-  Track.findOne({_id: req.params.traskId})
+  return Track.findOne({_id: req.params.tracksId})
     .then(track => {
       res.json(track.apiRepr());
     })

@@ -11,7 +11,7 @@ router.post('/tracks', ares.create_tracks);
 
 router.put('/tracks/:tracksId', ares.update_a_track);
 
-router.put('/tracks/:tracksId', ares.delete_a_track);
+router.delete('/tracks/:tracksId', ares.delete_a_track);
 
 module.exports = {
   router

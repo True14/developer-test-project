@@ -86,9 +86,12 @@ exports.update_a_track = (req, res) => {
 };
 
 exports.delete_a_track = (req, res) => {
-  return Track.remove({_id: req.params.taskId})
+  return Track.remove({_id: req.params.tracksId}, (err, numberRemoved) => {
+    return numberRemoved;
+  })
   .then(result => {
-    res.status(200);
+    // console.log('this is the result', result);
+    res.status(200).json();
   })
   .catch(err => {
     res.status(500).json({error: 'Problems removing the track'});

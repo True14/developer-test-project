@@ -225,15 +225,64 @@ describe('Ares-Test-Project', () => {
       });
 
       it('Should update when track already exists', () => {
-        testData[2] = updateData;
+        const newTestData = testData.slice();
+        newTestData[2] = updateData
+        let res;
         return chai.request(app).post('/api/tracks')
-          .send(testData)
+          .send(newTestData)
           .then(_res => {
+            res = _res.body;
+            let track = res[0];
+            _res.should.be.json;
+            _res.should.have.status(200);
+            res.should.have.length(2);
+            res.should.be.an('array');
+            track.should.be.an('object');
+            track.should.have.property('id').which.is.a('string');
+            track.should.have.property('position').which.is.a('object');
+            track.position.should.have.property('latitude').which.is.a('number');
+            track.position.latitude.should.equal(updateData.position.latitude);
+            track.position.should.have.property('longitude').which.is.a('number');
+            track.position.longitude.should.equal(updateData.position.longitude);
+            track.should.have.property('name').which.is.a('string');
+            track.name.should.equal(updateData.name);
+            track.should.have.property('callsign').which.is.a('string');
+            track.callsign.should.equal(updateData.callsign);
+            track.should.have.property('mmsid').which.is.a('string');
+            track.mmsid.should.equal(updateData.mmsid);
+            track.should.have.property('speed').which.is.a('number');
+            track.speed.should.equal(updateData.speed);
+            track.should.have.property('course').which.is.a('number');
+            track.course.should.equal(updateData.course);
+            track.should.have.property('heading').which.is.a('number');
+            track.heading.should.equal(updateData.heading);
           });
       });
 
     });
 
+  });
+
+  describe('DELETE endpoints', () => {
+
+    describe('/api/tracks/:tracksId', () => {
+      it('should remove a track', () => {
+        let res;
+        return Track.insertMany(testData)
+        .then(_res => {
+          res = _res[0];
+          return chai.request(app).delete(`/api/tracks/${res._id}`);
+        })
+        .then(() => {
+          return Track.find();
+        })
+        .then(_res => {
+          _res.should.be.an('array');
+          _res.should.have.length(1);
+          _res[0].name.should.equal(testData[1].name);
+        });
+      });
+    });
   });
 
 });

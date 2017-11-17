@@ -1,5 +1,5 @@
 import React from 'react';
-import { withGoogleMap, GoogleMap, Marker, withScriptjs, InfoWindow } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Marker, withScriptjs } from 'react-google-maps';
 import { InfoBox } from "react-google-maps/lib/components/addons/InfoBox";
 import { connect } from 'react-redux';
 import { getLocation, getTracks, setMap, toggleInfo} from '../actions';

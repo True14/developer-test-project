@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "run-p test:server test:client",
+    "test": "cd server && npm test",
     "test:server": "cd server && npm test",
     "test:client": "cd client && npm test",
     "dev": "run-p dev:server dev:client start",

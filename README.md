@@ -3,13 +3,13 @@ A full-stack test project for Ares.
 
 ## Getting Started
 1. Clone this repo and run npm install on your local machine.
-2. You'll need to setup an instance of mongodb [MongoDB](https://www.mongodb.com/) and run it.
+2. You'll need to setup an instance of [MongoDB](https://www.mongodb.com/) and run it.
 3. If you set up the database on anything but the local host, then you'll need to create a file in the server folder called '.env' and insert DATABASE_URL:YOUR_DATABASE_PATH inside.
-4. Grab a google maps api key [Google Map API key](https://developers.google.com/maps/documentation/javascript/get-api-key) and replace the value in client/src/config.js with your key.
+4. Grab a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key) and replace the value in client/src/config.js with your key.
 5. Run npm run dev to start the project, open up a browser and navigate to localhost:8080 to see the project.
 
 ## Node Version
-This application was built with node 8.9.1. Earlier versions may work, but to guarantee functionality please download v8.9.1 [node](https://nodejs.org/en/)
+This application was built with node 8.9.1. Earlier versions may work, but to guarantee functionality please download [node v8.9.1](https://nodejs.org/en/)
 
 ## Client
 The client uses React and Redux to handle putting data pulled from the API onto a google map. If data is present in the database, then it will be pulled and placed as markers on the map. Clicking on the markers will reveal more information on each one.

@@ -1,0 +1,10 @@
+.info-div {
+  text-align: left;
+}
+
+.infoBox {
+  width: 200px;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid black;
+}

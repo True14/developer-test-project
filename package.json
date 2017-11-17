@@ -8,6 +8,8 @@
     "test": "run-p test:server test:client",
     "test:server": "cd server && npm test",
     "test:client": "cd client && npm test",
+    "dev": "run-p dev:server dev:client start",
+    "dev:client": "cd client && cross-env BROWSER=none npm start -- --color=always | xp http://localhost:3000/ http://localhost:8080/",
     "dev:server": "cd server && npm start",
     "install": "run-s install:server install:client",
     "install:server": "cd server && npm install",
@@ -24,6 +26,11 @@
   },
   "homepage": "https://github.com/True14/developer-test-project#readme",
   "dependencies": {
-    "npm-run-all": "^4.1.2"
+    "cross-env": "^3.1.4",
+    "express": "^4.14.1",
+    "google-maps-react": "^1.1.2",
+    "http-proxy-middleware": "^0.17.3",
+    "npm-run-all": "^4.1.2",
+    "xp": "^1.0.1"
   }
 }

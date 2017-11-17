@@ -10,7 +10,8 @@ A full-stack test project for Ares.
 
 ## Node Version
 This application was built with node 8.9.1. Earlier versions may work, but to guarantee functionality please download [node v8.9.1](https://nodejs.org/en/) or later.
-
+## Screen Shots
+![map](./screenshots/map.png)
 ## Client
 The client uses React and Redux to handle putting data pulled from the API onto a google map. If data is present in the database, then it will be pulled and placed as markers on the map. Clicking on the markers will reveal more information on each one.
 

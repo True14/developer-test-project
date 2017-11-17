@@ -38,6 +38,13 @@ exports.create_tracks = (req, res) => {
   };
   const chain = req.body.reduce((previous, track) => {
     return previous.then(() => {
+      if (!track.mmsid) {
+        try {
+          throw new Error('Whoops!');
+        } catch (e) {
+          console.log(e.name + ': ' + e.message);
+        }
+      }
       return check(track);
     });
   }, Promise.resolve());
